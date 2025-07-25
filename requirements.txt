@@ -3,3 +3,5 @@ pymongo
 pandas
 textblob
 matplotlib
+transformers
+torch

@@ -39,23 +39,32 @@ df["word_count"] = df["feedback"].apply(lambda x: len(x.split()))
 st.write(f"📏 Average words per review: {df['word_count'].mean():.2f}")
 
 
-from textblob import TextBlob
-
 st.header("📝 Try Your Own Review!")
 
 user_input = st.text_area("Type your review here 👇", "")
 
-# Add a submit button
 if st.button("🔍 Submit"):
     if user_input.strip() == "":
         st.warning("Please enter a review first!")
     else:
-        blob = TextBlob(user_input)
-        polarity = blob.sentiment.polarity
+        result = sentiment_model(user_input)[0]
+        label = result['label']
+        score = result['score']
 
-        if polarity > 0:
-            st.success("🙂 Sentiment: Positive")
-        elif polarity == 0:
-            st.info("😐 Sentiment: Neutral")
+        if label == "POSITIVE":
+            st.success(f"🙂 Sentiment: Positive ({score:.2f})")
+        elif label == "NEGATIVE":
+            st.error(f"🙁 Sentiment: Negative ({score:.2f})")
         else:
-            st.error("🙁 Sentiment: Negative")
+            st.info(f"😐 Sentiment: Neutral-ish ({score:.2f})")
+
+
+from transformers import pipeline
+import streamlit as st
+
+# Load sentiment pipeline
+@st.cache_resource  # makes it fast after first run
+def load_sentiment_model():
+    return pipeline("sentiment-analysis")
+
+sentiment_model = load_sentiment_model()
