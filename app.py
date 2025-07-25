@@ -45,13 +45,17 @@ st.header("📝 Try Your Own Review!")
 
 user_input = st.text_area("Type your review here 👇", "")
 
-if user_input:
-    blob = TextBlob(user_input)
-    polarity = blob.sentiment.polarity
-
-    if polarity > 0:
-        st.success("🙂 Sentiment: Positive")
-    elif polarity == 0:
-        st.info("😐 Sentiment: Neutral")
+# Add a submit button
+if st.button("🔍 Submit"):
+    if user_input.strip() == "":
+        st.warning("Please enter a review first!")
     else:
-        st.error("🙁 Sentiment: Negative")
+        blob = TextBlob(user_input)
+        polarity = blob.sentiment.polarity
+
+        if polarity > 0:
+            st.success("🙂 Sentiment: Positive")
+        elif polarity == 0:
+            st.info("😐 Sentiment: Neutral")
+        else:
+            st.error("🙁 Sentiment: Negative")
