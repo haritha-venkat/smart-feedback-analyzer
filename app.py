@@ -37,3 +37,21 @@ st.bar_chart(sentiment_counts)
 st.subheader("Average Review Length")
 df["word_count"] = df["feedback"].apply(lambda x: len(x.split()))
 st.write(f"📏 Average words per review: {df['word_count'].mean():.2f}")
+
+
+from textblob import TextBlob
+
+st.header("📝 Try Your Own Review!")
+
+user_input = st.text_area("Type your review here 👇", "")
+
+if user_input:
+    blob = TextBlob(user_input)
+    polarity = blob.sentiment.polarity
+
+    if polarity > 0:
+        st.success("🙂 Sentiment: Positive")
+    elif polarity == 0:
+        st.info("😐 Sentiment: Neutral")
+    else:
+        st.error("🙁 Sentiment: Negative")
