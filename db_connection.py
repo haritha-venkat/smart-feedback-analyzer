@@ -1,7 +1,8 @@
 import pandas as pd
 from pymongo import MongoClient
 
-MONGO_URI = "mongodb+srv://harithashree0712:hxrithxxz2005@cluster0.sssfs0c.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+import os
+MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client["feedback_db"]
 collection = db["feedbacks_amazon"]  
