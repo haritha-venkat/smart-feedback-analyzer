@@ -2,6 +2,15 @@ import streamlit as st
 from pymongo import MongoClient
 import pandas as pd
 import matplotlib.pyplot as plt
+from transformers import pipeline
+
+# Load model only once using Streamlit cache
+@st.cache_resource
+def load_sentiment_model():
+    return pipeline("sentiment-analysis")
+
+# This line is **super important**
+sentiment_model = load_sentiment_model()
 
 
 import os
